@@ -22,9 +22,11 @@ public class App {
     try (CSVParser parser = new CSVParser(in, CSVFormat.EXCEL.withHeader())) {
       master.loadFrom(parser);
     }
-    master.forEach(row -> row.set("zip", row.get("zip") + " is the zipcode"));
+    // Change each zip value to a default zip+4.
+    master.forEach(row -> row.set("zip", row.get("zip") + "-0000"));
     master.forEach(row -> System.out.println(row.get("zip")));
 
+    // Get all of the rows from a specific zip code.
     List<Row> specialRows = master.stream().filter(row -> row.get("zip").startsWith("95610"))
         .collect(Collectors.toList());
     specialRows.forEach(row -> System.out.println(row.get("street")));
