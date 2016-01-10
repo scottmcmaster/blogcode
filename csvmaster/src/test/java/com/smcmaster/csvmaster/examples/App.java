@@ -1,4 +1,4 @@
-package com.smcmaster.csvmaster;
+package com.smcmaster.csvmaster.examples;
 
 import java.io.FileReader;
 import java.io.Reader;
@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+
+import com.smcmaster.csvmaster.CSVMaster;
+import com.smcmaster.csvmaster.Row;
 
 /**
  * Simple test app for the CSVMaster CSV processor.

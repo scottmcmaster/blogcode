@@ -23,7 +23,7 @@ public class CSVMaster implements Iterable<Row> {
   public void loadFrom(CSVParser parser) throws Exception {
     this.header = new ArrayList<String>(parser.getHeaderMap().keySet());
     for (CSVRecord record : parser.getRecords()) {
-      rows.add(Row.loadFrom(parser.getHeaderMap(), record));
+      rows.add(Row.loadFrom(header, record));
     }
   }
 
@@ -31,6 +31,15 @@ public class CSVMaster implements Iterable<Row> {
     return rows;
   }
 
+  /**
+   * Adds a new blank row and returns it.
+   */
+  public Row addRow() {
+    Row newRow = new Row(header);
+    rows.add(newRow);
+    return newRow;
+  }
+  
   @Override
   public Iterator<Row> iterator() {
     return rows.iterator();
@@ -40,10 +49,15 @@ public class CSVMaster implements Iterable<Row> {
     return rows.stream();
   }
 
+  /**
+   * Writes the CSV output. Includes a trailing newline.
+   * TODO: Quoting/escaping following along with http://tools.ietf.org/html/rfc4180.
+   */
   public void writeTo(Appendable out) throws IOException {
     for (int i = 0; i < header.size(); i++) {
       out.append(header.get(i));
       if (i < header.size() - 1) {
+        out.append(',');
       }
     }
     out.append('\n');
