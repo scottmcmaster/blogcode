@@ -3,8 +3,12 @@
 
 # Ignore target directories
 target
+bin
 
 # Ignore Eclipse things
 .classpath
 .settings
 .project
+
+# Scala/sbt things
+.cache-main
