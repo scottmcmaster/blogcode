@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
 public @interface Comparison {
 
   public enum Type {
-    EQUALS, GREATER_THAN, LESS_THAN, NOT_EQUAL, GREATER_THAN_OR_EQUALS, LESS_THAN_OR_EQUALS
+    EQUALS, GREATER_THAN, LESS_THAN, NOT_EQUAL, GREATER_THAN_OR_EQUALS, LESS_THAN_OR_EQUALS, NULL, NOT_NULL
   }
   
   String[] inputs() default "";

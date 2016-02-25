@@ -21,6 +21,12 @@ import com.smcmaster.selftest.annotations.SelfTestType;
  */
 public class SelfTest {
   
+  /**
+   * Java annotation parameters cannot be null, so we create a sentinel value here to
+   * place on annotation inputs and outputs.
+   */
+  public static final String NULL_VALUE = "SPECIAL NULL MARKER FOR SELF-TEST INPUTS AND OUTPUTS";
+  
   /** The object we're testing. */
   private final Object objectUnderTest;
   
@@ -74,6 +80,8 @@ public class SelfTest {
             for (Comparison comparison : ((Comparisons) annotation).value()) {
               result.add(new SelfTestCase(method, comparison, currentIdx++));
             }
+          } else if (annotation instanceof Comparison) {
+            result.add(new SelfTestCase(method, (Comparison) annotation, currentIdx++));
           }
         }
       } catch (Exception ex) {
@@ -95,7 +103,7 @@ public class SelfTest {
     String[] parameterValueDatas = comparison.inputs();
     Object[] parameterValues = coerceParameters(parameterValueDatas, parameterTypes);
     Object actual = method.invoke(objectUnderTest, parameterValues);
-    if (!(actual instanceof Comparable)) {
+    if (actual != null && !(actual instanceof Comparable)) {
       throw new IllegalStateException("Method does not return a Comparable");
     }
 
@@ -127,6 +135,12 @@ public class SelfTest {
       case NOT_EQUAL:
         Assert.assertNotEquals(comparison.description(), expected, actual);
         break;
+      case NULL:
+        Assert.assertNull(comparison.description(), actual);
+        break;
+      case NOT_NULL:
+        Assert.assertNotNull(comparison.description(), actual);
+        break;
       default:
         break;
     }
@@ -154,6 +168,14 @@ public class SelfTest {
    * Converts a string value to the target type.
    */
   private Object coerceValue(String rawData, Class<?> targetType) {
+    if (rawData == null || NULL_VALUE.equals(rawData)) {
+      return null;
+    }
+    if (rawData.isEmpty()) {
+      // TODO: Happens when input/output is omitted. Maybe this should default to 0 or null based on type.
+      return "";
+    }
+    
     switch (targetType.getName()) {
       case "int":
       case "java.lang.Integer":

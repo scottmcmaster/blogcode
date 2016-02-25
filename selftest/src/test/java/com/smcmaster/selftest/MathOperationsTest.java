@@ -22,7 +22,6 @@ import com.smcmaster.selftest.runner.SelfTestRunner;
  */
 @RunWith(SelfTestRunner.class)
 public class MathOperationsTest {
-
   @SelfTestMethod(name = "Default math operations")
   public MathOperations selfTestMathOperations() {
     return new MathOperations();
