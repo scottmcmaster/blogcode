@@ -1,3 +1,3 @@
 # blogcode
-See http://www.smcmaster.com
+See the associated articles at http://www.smcmaster.com
 Scott McMaster (2016)
